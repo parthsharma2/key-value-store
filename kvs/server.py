@@ -2,7 +2,7 @@ import logging
 import socket
 import threading
 
-from key_value_store.key_value_store import KeyValueStore
+from kvs.kvs import KeyValueStore
 
 
 logger = logging.getLogger(__name__)
@@ -59,7 +59,7 @@ class Server:
                 else:
                     logger.info(f'Client {address[0]}:{address[1]} disconnected')
                     client.close()
-            except Exception as e:
+            except Exception:
                 client.close()
                 return
 
