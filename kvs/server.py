@@ -1,4 +1,5 @@
 import argparse
+import logging
 import threading
 from flask import Flask, request, jsonify, abort
 
@@ -8,6 +9,8 @@ from kvs.kvs import KeyValueStore
 app = Flask(__name__)
 key_value_store = KeyValueStore()
 lock = threading.RLock()
+
+logging.basicConfig(level=logging.INFO)
 
 @app.route('/api/ping')
 def ping():
@@ -59,7 +62,7 @@ def main():
 
     args = parser.parse_args()
 
-    app.run(debug=True, host=args.host, port=args.port)
+    app.run(host=args.host, port=args.port)
 
 if __name__ == "__main__":
     main()
