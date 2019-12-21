@@ -1,3 +1,4 @@
+import argparse
 import threading
 from flask import Flask, request, jsonify, abort
 
@@ -45,5 +46,16 @@ def delete(key):
 
     return jsonify({'result': result})
 
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-H', '--host', default='127.0.0.1', type=str,
+                        help='hostname/IP to run the server on. Default: 127.0.0.1')
+    parser.add_argument('-p', '--port', default=25552, type=int,
+                        help='port to run the server on. Default: 25552')
+
+    args = parser.parse_args()
+
+    app.run(debug=True, host=args.host, port=args.port)
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    main()
