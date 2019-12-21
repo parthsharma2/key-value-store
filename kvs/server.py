@@ -9,6 +9,10 @@ app = Flask(__name__)
 key_value_store = KeyValueStore()
 lock = threading.RLock()
 
+@app.route('/api/ping')
+def ping():
+    return jsonify({'status': 'ok'})
+
 @app.route('/api/<key>', methods=['GET'])
 def get(key):
     with lock:

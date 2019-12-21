@@ -24,6 +24,17 @@ class Client:
         self.port = port
         self.url = f'http://{host}:{port}/api'
 
+        # Check if the REST server is running
+        try:
+            requests.get(f'{self.url}/ping')
+        except requests.exceptions.ConnectionError:
+            print(f"Couldn't connect to {self.host}:{self.port}!",
+                  "Make sure the KeyValueStore REST server is running.")
+            self.exit(1)
+        except Exception as e:
+            logger.exception(e)
+            self.exit(1)
+
     def execute(self, cmd, *args):
         """Execute a command"""
         if cmd.lower() == 'get':
