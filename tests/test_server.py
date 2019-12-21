@@ -44,3 +44,17 @@ def test_server_delete_non_existant_key(client):
     res = client.delete('/api/hello')
     assert res.status_code == 200
     assert res.json['result'] == 'hello does not exist'
+
+def test_server_responds_with_400_with_incorrect_set_request(client):
+    res = client.post('/api/test')
+    assert res.status_code == 400
+
+    res = client.post('/api/test', data='non json data')
+    assert res.status_code == 400
+
+    res = client.post('/api/test', json={'val': 'abc'})
+    assert res.status_code == 400
+
+def test_server_handles_404(client):
+    res = client.get('/something')
+    assert res.status_code == 404
