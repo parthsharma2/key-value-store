@@ -8,16 +8,20 @@ from kvs.kvs import KeyValueStore
 
 app = Flask(__name__)
 key_value_store = KeyValueStore()
+
+# Lock to make accessing the KeyValueStore thread safe
 lock = threading.RLock()
 
 logging.basicConfig(level=logging.INFO)
 
 @app.route('/api/ping')
 def ping():
+    """Server status check."""
     return jsonify({'status': 'ok'})
 
 @app.route('/api/<key>', methods=['GET'])
 def get(key):
+    """Get value of a key."""
     with lock:
         result = key_value_store.get(key)
 
@@ -26,6 +30,7 @@ def get(key):
 
 @app.route('/api/<key>', methods=['POST'])
 def set(key):
+    """Set value of a key."""
     if not request.json or not 'value' in request.json:
         abort(400)
 
@@ -43,6 +48,7 @@ def set(key):
 
 @app.route('/api/<key>', methods=['DELETE'])
 def delete(key):
+    """Delete key if it exists."""
     with lock:
         result = key_value_store.delete(key)
 
