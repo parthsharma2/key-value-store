@@ -1,6 +1,6 @@
 import logging
 
-from kvs.util import Singleton
+from kvs.metaclasses import Singleton
 
 
 logger = logging.getLogger(__name__)
